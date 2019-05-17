@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">RMS</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/custom.css}"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <style>
+        body {
+            padding-top: 5rem;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" sec:authorize="isAuthenticated()">
+    <a class="navbar-brand" href="#">Resource Management System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto float-right">
+            <li class="nav-item active">
+                <a class="nav-link active" th:href="@{/users}">Users</a>
+            </li>
+        </ul>
+    </div>
+    <div class="text-white pr-2">@<th:block sec:authentication="name"/></div>
+    <a class="btn btn-primary" th:href="@{/account/logout}">Logout</a>
+</nav>
+
+<main role="main" class="container">
+    <nav>
+        <th:block layout:fragment="breadcrumb"> </th:block>
+    </nav>
+    <th:block layout:fragment="content"> </th:block>
+</main>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        crossorigin="anonymous"></script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<th:block layout:fragment="script"> </th:block>
+</body>
+</html>

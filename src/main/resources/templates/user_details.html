@@ -1,0 +1,164 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shell}">
+<ol class="breadcrumb" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item" aria-current="page">
+        <a th:href="@{/users}">Users</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+        <a th:href="@{|/users/details/${user.id}|}" th:if="${user}">Details for User [[${user.name}]]</a>
+        <a th:unless="${user}" th:href="@{/users/create}">Create a new User</a>
+    </li>
+</ol>
+
+<div layout:fragment="content">
+    <div class="d-flex flex-row justify-content-end pb-3"  th:if="${user.id}!=0">
+        <div>
+            <button class="btn btn-primary edit-password">Edit Password</button>
+        </div>
+        <form th:action="${user.google!=null?'/users/disconnect/google':'/signin/google'}" method="POST" class="pl-3">
+            <input type="hidden" name="scope" value="profile email" />
+            <button type="submit" class="btn btn-danger btn-block btn-connect" th:disabled="${!is_current}">
+                <span class="fab fa-google-plus"></span>
+                <span th:if="${user.google!=null}" th:text="Connected" class="connect_text"></span>
+            </button>
+        </form>
+
+        <form th:action="${user.facebook!=null?'/users/disconnect/facebook':'/signin/facebook'}" method="POST" class="pl-3">
+            <input type="hidden" name="scope" value="public_profile,email" />
+            <button type="submit" class="btn btn-primary btn-block btn-connect" th:disabled="${!is_current}">
+                <span class="fab fa-facebook"></span>
+                <span th:if="${user.facebook!=null}" th:text="Connected" class="connect_text"></span>
+            </button>
+        </form>
+
+        <form th:action="${user.twitter!=null?'/users/disconnect/twitter':'/signin/twitter'}" method="POST" class="pl-3">
+            <input type="hidden" name="scope"
+                   value="r_basicprofile,r_emailaddress" />
+            <button type="submit" class="btn btn-primary btn-block btn-connect" th:disabled="${!is_current}">
+                <span class="fab fa-twitter"></span>
+                <span th:if="${user.twitter!=null}" th:text="Connected" class="connect_text"></span>
+            </button>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form enctype="multipart/form-data" th:object="${user}" th:action='@{|${user.id==0?"/users/create":"/users/details/"+user.id}|}' method="post" autocomplete="off">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input th:field="*{name}" type="text" class="form-control" />
+                    <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input th:field="*{username}" type="text" class="form-control"/>
+                    <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input th:field="*{email}" type="email" class="form-control"/>
+                    <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input th:field="*{address}" type="text" class="form-control"/>
+                    <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                </div>
+                <div class="form-group" th:if=  "${user.id}==0">
+                    <label>Password</label>
+                    <input th:field="*{password}" type="password" class="form-control"/>
+                    <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Picture</label>
+                    <input name="image" type="file" class="form-control"/>
+                    <div class="text-danger" th:if="${#fields.hasErrors('picture')}" th:errors="*{picture}"></div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-block btn-success"
+                            th:text="${user}==null?'Create User':'Save Changes'"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            /*[# th:if="${user}!=null"]*/
+            $('input[name="name"]').val(/*[[${user.name}]]*/)
+            $('input[name="email"]').val(/*[[${user.email}]]*/)
+            $('input[name="username"]').val(/*[[${user.username}]]*/)
+            $('input[name="address"]').val(/*[[${user.address}]]*/)
+
+            $(".btn-connect").hover(function(){
+               $(this).find(".connect_text").html("Disconnect")
+            },function(){
+                $(this).find(".connect_text").html("Connected")
+            });
+
+            $(".edit-password").click(function(){
+                Swal.mixin({
+                    input: 'password',
+                    inputPlaceholder: 'Enter your password',
+                    inputAttributes: {
+                        minlength:8,
+                        maxlength: 16,
+                        autocapitalize: 'off',
+                        autocorrect: 'off'
+                    },
+                    inputValidator: (value) => {
+                    if (!value) {
+                    return 'This field is required!'
+                }
+            },
+                confirmButtonText: 'Next &rarr;',
+                    showCancelButton: true,
+                    progressSteps: ['1', '2']
+            }).queue([
+                    'New Password',
+                    'Confirmation Password'
+                ]).then((result) => {
+                    if (result.value) {
+                    if(result.value[0]!=result.value[1]){
+                        Swal.fire(
+                            'Error!',
+                            'Password and Confirmation password doesn\'t match!',
+                            'error'
+                        )
+                        return;
+                    }
+                    $.ajax({
+                        url:  /*[[@{|/users/password/${user.id}|}]]*/,
+                        method:"PUT",
+                        headers:{
+                            "Content-type":"application/json"
+                        },
+                        dataType: "json",
+                        data:JSON.stringify({"password":result.value[0]}),
+                        success:function(response){
+                            Swal.fire(
+                                'Information',
+                                response.response,
+                                'success'
+                            ).then(res=>{
+                                window.location.reload();
+                        })
+                        },
+                        error:function(req,msg,error){
+                            Swal.fire(
+                                'Error!',
+                                'Something went wrong',
+                                'error'
+                            )
+                        }
+                    });
+                }
+            })
+
+            })
+            /*[/]*/
+        })
+    </script>
+</div>

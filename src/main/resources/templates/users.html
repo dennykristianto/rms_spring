@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shell}">
+
+<ol class="breadcrumb" layout:fragment="breadcrumb">
+    <li class="breadcrumb-item" aria-current="page">
+        <a th:href="@{/users}">Users</a>
+    </li>
+</ol>
+
+<div layout:fragment="content">
+    <h3>Good [[${T(com.mitrais.rms.helper.Helper).getGreetings()}]], <th:block sec:authentication="principal.name"/></h3>
+    <div class="d-flex flex-row justify-content-end pb-3">
+        <div>
+            <a th:href="@{/users/create}" class="btn btn-primary">Add New User</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Picture</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col" style="max-width: 75px;">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, status : ${users}">
+            <td th:text="${status.index+1}"></td>
+            <td><img th:src="@{|${user.picture}|}" style="max-width:100px" class="img-fluid"/> </td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.address}"></td>
+            <td>
+                <a th:href="@{|/users/details/${user.id}|}" class="btn btn-primary btn-block">Detail User</a>
+                <button class="btn btn-danger btn-block delete-user" th:data-id="${user.id}" th:data-name="${user.name}">Delete User</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $(".delete-user").click(function(){
+                var baseUrl = /*[[@{/users/delete/}]]*/;
+
+                Swal.fire({
+                    title: "Confirmation",
+                    text: "Are you sure want to delete "+$(this).data("name")+"?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    reverseButtons:true,
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url:  baseUrl+$(this).data('id'),
+                            method:"DELETE",
+                            dataType:'JSON',
+                            success:function(response){
+                                Swal.fire(
+                                    'Deleted!',
+                                    response.response,
+                                    'success'
+                                ).then(res=>{
+                                    window.location.reload();
+                                })
+                            },
+                            error:function(req,msg,error){
+                                Swal.fire(
+                                    'Error!',
+                                    'Something went wrong',
+                                    'error'
+                                )
+                            }
+
+                        })
+                    }
+                })
+            })
+        })
+    </script>
+</div>

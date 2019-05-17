@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shell}">
+<div layout:fragment="content">
+    <div class="d-flex flex-row justify-content-center">
+        <div class="form-login">
+            <form th:action="@{/account/login}" method="post">
+                <div class="display-4 pb-3 text-center">Login</div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Username" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Password" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <input id="remember" type="checkbox" name="remember"/>
+                    <label for="remember">Remember Me</label>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block">
+                        Login
+                    </button>
+                </div>
+                <div class="text-danger text-center font-weight-bold" th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]?.message}"></div>
+            </form>
+
+            <form action="/signin/google" method="POST" class="pb-3">
+                <input type="hidden" name="scope" value="profile email" />
+                <button type="submit" class="btn btn-danger btn-block">
+                   Login with Google <span class="fab fa-google-plus"></span>
+                </button>
+            </form>
+
+            <form action="/signin/facebook" method="POST" class="pb-3">
+                <input type="hidden" name="scope" value="public_profile,email" />
+                <button type="submit" class="btn btn-primary btn-block">
+                   Login with Facebook <span class="fab fa-facebook"></span>
+                </button>
+            </form>
+
+            <form action="/signin/twitter" method="POST" class="pb-3">
+                <input type="hidden" name="scope" value="public_profile,email" />
+                <button type="submit" class="btn btn-primary btn-block">
+                    Login with Twitter <span class="fab fa-twitter"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

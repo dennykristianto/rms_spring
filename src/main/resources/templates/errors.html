@@ -1,0 +1,13 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shell}">
+
+<div layout:fragment="content">
+    <h5 class="font-italic text-center font-weight-light">
+        <p>I'm sorry to inform you, we can't display this page right now because of technical difficulties.</p>
+        <p>Maybe you want to contact our IT staff and provide him an error code below, and let him do the magic</p>
+    </h5>
+    <div class="display-1 font-weight-bold text-primary text-center" th:text="${error[0]}"></div>
+    <h1 class="text-success text-center" th:text="${error[1].replace('_',' ')}"></h1>
+</div>
