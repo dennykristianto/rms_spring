@@ -103,7 +103,6 @@ public class LoginController {
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("signup");
-            modelAndView.setViewName("redirect:/account/signup");
         }
         return modelAndView;
     }

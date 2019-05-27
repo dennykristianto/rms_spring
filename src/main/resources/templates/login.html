@@ -27,6 +27,9 @@
                 <div class="text-danger text-center font-weight-bold" th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]?.message}"></div>
             </form>
 
+            <div class="pb-3">
+            <a th:href="@{/account/signup}" class="btn btn-block btn-warning">Signup </a>
+            </div>
             <form action="/signin/google" method="POST" class="pb-3">
                 <input type="hidden" name="scope" value="profile email" />
                 <button type="submit" class="btn btn-danger btn-block">

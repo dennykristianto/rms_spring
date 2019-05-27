@@ -109,7 +109,7 @@ public class UserController {
         User userInDb=userService.findUserById(id);
         userInDb.setPassword(user.getPassword());
         userService.saveUser(userInDb);
-        return ResponseEntity.ok().headers(getHeaders()).body(Collections.singletonMap("response","User password update!"));
+        return ResponseEntity.ok().headers(getHeaders()).body(Collections.singletonMap("response","User password updated!"));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

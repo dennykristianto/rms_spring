@@ -2,6 +2,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{shell}">
+<sec:authentication var="principal" property="principal" />
 
 <ol class="breadcrumb" layout:fragment="breadcrumb">
     <li class="breadcrumb-item" aria-current="page">
@@ -38,7 +39,7 @@
             <td th:text="${user.address}"></td>
             <td>
                 <a th:href="@{|/users/details/${user.id}|}" class="btn btn-primary btn-block">Detail User</a>
-                <button class="btn btn-danger btn-block delete-user" th:data-id="${user.id}" th:data-name="${user.name}">Delete User</button>
+                <button th:if="${!T(com.mitrais.rms.helper.Helper).isLoggedInUser(user)}" class="btn btn-danger btn-block delete-user" th:data-id="${user.id}" th:data-name="${user.name}">Delete User</button>
             </td>
         </tr>
         </tbody>

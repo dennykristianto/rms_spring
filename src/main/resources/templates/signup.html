@@ -62,72 +62,15 @@
 <div layout:fragment="script">
     <script th:inline="javascript">
         $(document).ready(function () {
+            /*[# th:if="${successMessage!=null}"]*/
+                alert(/*[[${successMessage}]]*/);
+            /*[/]*/
+
             /*[# th:if="${user}!=null"]*/
             $('input[name="name"]').val(/*[[${user.name}]]*/)
             $('input[name="email"]').val(/*[[${user.email}]]*/)
             $('input[name="username"]').val(/*[[${user.username}]]*/)
             $('input[name="address"]').val(/*[[${user.address}]]*/)
-
-            $(".edit-password").click(function(){
-                Swal.mixin({
-                    input: 'password',
-                    inputPlaceholder: 'Enter your password',
-                    inputAttributes: {
-                        minlength:8,
-                        maxlength: 16,
-                        autocapitalize: 'off',
-                        autocorrect: 'off'
-                    },
-                    inputValidator: (value) => {
-                    if (!value) {
-                    return 'This field is required!'
-                }
-            },
-                confirmButtonText: 'Next &rarr;',
-                    showCancelButton: true,
-                    progressSteps: ['1', '2']
-            }).queue([
-                    'New Password',
-                    'Confirmation Password'
-                ]).then((result) => {
-                    if (result.value) {
-                    if(result.value[0]!=result.value[1]){
-                        Swal.fire(
-                            'Error!',
-                            'Password and Confirmation password doesn\'t match!',
-                            'error'
-                        )
-                        return;
-                    }
-                    $.ajax({
-                        url:  /*[[@{|/users/password/${user.id}|}]]*/,
-                        method:"PUT",
-                        headers:{
-                            "Content-type":"application/json"
-                        },
-                        dataType: "json",
-                        data:JSON.stringify({"password":result.value[0]}),
-                        success:function(response){
-                            Swal.fire(
-                                'Information',
-                                response.response,
-                                'success'
-                            ).then(res=>{
-                                window.location.reload();
-                        })
-                        },
-                        error:function(req,msg,error){
-                            Swal.fire(
-                                'Error!',
-                                'Something went wrong',
-                                'error'
-                            )
-                        }
-                    });
-                }
-            })
-
-            })
             /*[/]*/
         })
     </script>
