@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Data
-public class UsrDetails implements UserDetails {
+public class RmsUserDetails implements UserDetails {
 
     public enum SocialMediaService {FACEBOOK, TWITTER, GOOGLE, LINKED_IN}
 
@@ -70,46 +70,46 @@ public class UsrDetails implements UserDetails {
     }
 
     public static class Builder{
-        private UsrDetails usrDetails;
+        private RmsUserDetails rmsUserDetails;
 
         public Builder(){
-            usrDetails=new UsrDetails();
-            usrDetails.authorities=new ArrayList<>();
+            rmsUserDetails =new RmsUserDetails();
+            rmsUserDetails.authorities=new ArrayList<>();
         }
         public Builder name(String name){
-            usrDetails.setName(name);
+            rmsUserDetails.setName(name);
             return this;
         }
         public Builder username(String username){
-            usrDetails.setUsername(username);
+            rmsUserDetails.setUsername(username);
             return this;
         }
         public Builder password(String password){
-            usrDetails.setPassword(password);
+            rmsUserDetails.setPassword(password);
             return this;
         }
         public Builder id(Long id){
-            usrDetails.setId(id);
+            rmsUserDetails.setId(id);
             return this;
         }
         public Builder facebook(String id){
-            usrDetails.setFacebook(id);
+            rmsUserDetails.setFacebook(id);
             return this;
         }
         public Builder twitter(String id){
-            usrDetails.setTwitter(id);
+            rmsUserDetails.setTwitter(id);
             return this;
         }
         public Builder google(String id){
-            usrDetails.setGoogle(id);
+            rmsUserDetails.setGoogle(id);
             return this;
         }
         public Builder addAuthorities(String authority){
-            usrDetails.authorities.add((GrantedAuthority) ()->authority);
+            rmsUserDetails.authorities.add((GrantedAuthority) ()->authority);
             return this;
         }
-        public UsrDetails build(){
-            return usrDetails;
+        public RmsUserDetails build(){
+            return rmsUserDetails;
         }
     }
 }

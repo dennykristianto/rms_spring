@@ -1,20 +1,15 @@
 package com.mitrais.rms.controller;
 
 import com.mitrais.rms.model.User;
-import com.mitrais.rms.model.UsrDetails;
+import com.mitrais.rms.model.RmsUserDetails;
 import com.mitrais.rms.service.StorageService;
 import com.mitrais.rms.service.UserService;
-import com.sun.net.httpserver.Headers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.google.api.Google;
-import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.Collections;
 
@@ -50,7 +44,7 @@ public class UserController {
     public ModelAndView userDetails(@PathVariable int id){
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.addObject("user",userService.findUserById(id));
-        modelAndView.addObject("is_current", ((UsrDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().equals((long)id));
+        modelAndView.addObject("is_current", ((RmsUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().equals((long)id));
         modelAndView.setViewName("user_details");
         return modelAndView;
     }
@@ -76,7 +70,7 @@ public class UserController {
     @PostMapping("disconnect/{provider}")
     public String disconnectProvider(@PathVariable String provider, HttpServletRequest request){
         if(!(SecurityContextHolder.getContext().getAuthentication()instanceof AnonymousAuthenticationToken)){
-            User current=userService.findUserById(((UsrDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().intValue());
+            User current=userService.findUserById(((RmsUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().intValue());
 
             Class usrClass = current.getClass();
             try {

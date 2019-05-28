@@ -18,10 +18,10 @@ package com.mitrais.rms.helper;
 import com.mitrais.rms.model.User;
 
 /**
- * Simple SecurityContext that stores the currently signed-in connection in a thread local.
+ * Simple CustomSecurityContext that stores the currently signed-in connection in a thread local.
  * @author Keith Donald
  */
-public final class SecurityContext {
+public final class CustomSecurityContext {
 
 	private static final ThreadLocal<User> currentUser = new ThreadLocal<User>();
 

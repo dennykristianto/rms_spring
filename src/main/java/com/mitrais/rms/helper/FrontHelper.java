@@ -1,12 +1,12 @@
 package com.mitrais.rms.helper;
 
 import com.mitrais.rms.model.User;
-import com.mitrais.rms.model.UsrDetails;
+import com.mitrais.rms.model.RmsUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalTime;
 
-public class Helper {
+public class FrontHelper {
     public static String getGreetings(){
         LocalTime time=LocalTime.now();
         if(time.getHour()>0 && time.getHour()<12)
@@ -20,6 +20,6 @@ public class Helper {
     }
 
     public static boolean isLoggedInUser(User user){
-        return ((UsrDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().equals((long)user.getId());
+        return ((RmsUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().equals((long)user.getId());
     }
 }

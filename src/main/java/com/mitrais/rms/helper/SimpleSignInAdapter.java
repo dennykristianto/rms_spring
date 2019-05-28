@@ -15,35 +15,18 @@
  */
 package com.mitrais.rms.helper;
 
-import com.mitrais.rms.model.User;
-import com.mitrais.rms.model.UsrDetails;
 import com.mitrais.rms.service.UserService;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.social.connect.web.SignInAdapter;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 
 public final class SimpleSignInAdapter implements SignInAdapter {
 	private UserService userService;
-	private final UserCookieGenerator userCookieGenerator = new UserCookieGenerator();
 	private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
 	public SimpleSignInAdapter(UserService userService){

@@ -11,7 +11,7 @@
 </ol>
 
 <div layout:fragment="content">
-    <h3>Good [[${T(com.mitrais.rms.helper.Helper).getGreetings()}]], <th:block sec:authentication="principal.name"/></h3>
+    <h3>Good [[${T(com.mitrais.rms.helper.FrontHelper).getGreetings()}]], <th:block sec:authentication="principal.name"/></h3>
     <div class="d-flex flex-row justify-content-end pb-3">
         <div>
             <a th:href="@{/users/create}" class="btn btn-primary">Add New User</a>
@@ -39,7 +39,7 @@
             <td th:text="${user.address}"></td>
             <td>
                 <a th:href="@{|/users/details/${user.id}|}" class="btn btn-primary btn-block">Detail User</a>
-                <button th:if="${!T(com.mitrais.rms.helper.Helper).isLoggedInUser(user)}" class="btn btn-danger btn-block delete-user" th:data-id="${user.id}" th:data-name="${user.name}">Delete User</button>
+                <button th:if="${!T(com.mitrais.rms.helper.FrontHelper).isLoggedInUser(user)}" class="btn btn-danger btn-block delete-user" th:data-id="${user.id}" th:data-name="${user.name}">Delete User</button>
             </td>
         </tr>
         </tbody>

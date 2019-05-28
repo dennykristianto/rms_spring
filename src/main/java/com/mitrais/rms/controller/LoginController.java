@@ -1,8 +1,7 @@
 package com.mitrais.rms.controller;
 
-import com.mitrais.rms.helper.SecurityContext;
 import com.mitrais.rms.model.User;
-import com.mitrais.rms.model.UsrDetails;
+import com.mitrais.rms.model.RmsUserDetails;
 import com.mitrais.rms.service.StorageService;
 import com.mitrais.rms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +9,9 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.ProviderSignInAttempt;
 import org.springframework.social.connect.web.SessionStrategy;
-import org.springframework.social.facebook.api.Facebook;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -28,8 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.Map;
 
 @Controller
 @RequestMapping("account")
@@ -63,7 +58,7 @@ public class LoginController {
             modelAndView.addObject("user",user);
 
             if(!(SecurityContextHolder.getContext().getAuthentication()instanceof AnonymousAuthenticationToken)){
-                User current=userService.findUserById(((UsrDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().intValue());
+                User current=userService.findUserById(((RmsUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId().intValue());
 
                 Class usrClass = current.getClass();
                 try {

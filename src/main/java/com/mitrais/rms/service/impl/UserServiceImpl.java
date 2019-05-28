@@ -1,7 +1,7 @@
 package com.mitrais.rms.service.impl;
 
 import com.mitrais.rms.model.User;
-import com.mitrais.rms.model.UsrDetails;
+import com.mitrais.rms.model.RmsUserDetails;
 import com.mitrais.rms.repository.UserRepository;
 import com.mitrais.rms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    @Override
     public User findUserByUsername(String name) throws UsernameNotFoundException {
         return userRepository.findByUsername(name).orElseThrow(()-> new UsernameNotFoundException("Username cannot be found!"));
     }
@@ -34,9 +33,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UsrDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    public RmsUserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user=findUserByUsername(s);
-        return new UsrDetails.Builder()
+        return new RmsUserDetails.Builder()
                 .id((long) user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
@@ -55,7 +54,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
-        if(user.getPassword()!=null)user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword()!=null){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userRepository.save(user);
     }
 
