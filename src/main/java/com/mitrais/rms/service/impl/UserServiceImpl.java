@@ -1,7 +1,9 @@
 package com.mitrais.rms.service.impl;
 
+import com.mitrais.rms.model.Role;
 import com.mitrais.rms.model.User;
 import com.mitrais.rms.model.RmsUserDetails;
+import com.mitrais.rms.repository.RoleRepository;
 import com.mitrais.rms.repository.UserRepository;
 import com.mitrais.rms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public User findUserById(int id) {
@@ -33,6 +37,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Role findByRoleName(String name) {
+        return roleRepository.findFirstByName(name);
+    }
+
+    @Override
     public RmsUserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user=findUserByUsername(s);
         return new RmsUserDetails.Builder()
@@ -43,7 +52,7 @@ public class UserServiceImpl implements UserService {
                 .facebook(user.getFacebook())
                 .google(user.getGoogle())
                 .twitter(user.getTwitter())
-                .addAuthorities(user.getRole().toString())
+                .addAuthorities(user.getRole().getName())
                 .build();
     }
 

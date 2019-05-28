@@ -18,8 +18,6 @@ public class User implements Serializable {
 
     public interface PasswordUpdate { }
 
-    public enum Role {ROLE_USER, ROLE_ADMIN}
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -48,8 +46,8 @@ public class User implements Serializable {
 
     private String picture;
 
+    @ManyToOne
     private Role role;
-
 
     public User(){};
     public User(int id){this.setId(id);}

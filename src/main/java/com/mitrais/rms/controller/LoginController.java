@@ -93,7 +93,7 @@ public class LoginController {
         } else {
             if(image.getSize()>0)
                 user.setPicture(storageService.store("users",image));
-            user.setRole(User.Role.ROLE_USER);
+            user.setRole(userService.findByRoleName("ROLE_USER"));
             userService.saveUser(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());

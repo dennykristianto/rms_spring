@@ -88,7 +88,9 @@ public class UserController {
     private void modelViewConstructor(@RequestParam(required = false) MultipartFile image, ModelAndView modelAndView, User userInDb, String s) {
         if(image.getSize()>0)
             userInDb.setPicture(storageService.store("users",image));
-        userInDb.setRole(User.Role.ROLE_USER);
+//        userInDb.setRole(User.Role.ROLE_USER);
+
+        userInDb.setRole(userService.findByRoleName("ROLE_USER"));
         userService.saveUser(userInDb);
         modelAndView.addObject("successMessage", s);
         modelAndView.addObject("user", new User());
